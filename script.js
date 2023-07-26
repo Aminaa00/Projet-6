@@ -10,6 +10,18 @@ document.addEventListener("DOMContentLoaded", function() {
     divContent.appendChild(bookListDiv);
 
 
+    // Sélectionner l'élément body
+const body = document.body;
+
+// Créer un élément bouton
+const addButton = document.createElement('button');
+addButton.textContent = 'Ajouter un livre';
+addButton.id = 'addBookButton'; // Ajouter un ID au bouton pour pouvoir le styler
+
+// Ajouter le bouton à la page
+body.appendChild(addButton);
+
+
  });
 
 
