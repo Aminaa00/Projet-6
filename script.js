@@ -1,5 +1,6 @@
 console.log("Bonjour ceci est mon fichier JavaScript :)");
 
+
 document.addEventListener("DOMContentLoaded", function() {
     const bookListDiv = document.createElement("div");
     const divContent = document.getElementById('content');
@@ -9,17 +10,17 @@ document.addEventListener("DOMContentLoaded", function() {
     bookListDiv.id= 'bookList';
     divContent.appendChild(bookListDiv);
 
-
-    // Sélectionner l'élément body
+// Sélection de l'élément body
 const body = document.body;
-
-// Créer un élément bouton
+// Création élément bouton
 const addButton = document.createElement('button');
 addButton.textContent = 'Ajouter un livre';
-addButton.id = 'addBookButton'; // Ajouter un ID au bouton pour pouvoir le styler
+addButton.id = 'addBookButton'; // Ajout ID au bouton pour pouvoir le styler
 
-// Ajouter le bouton à la page
+// Ajout bouton à la page
 body.appendChild(addButton);
+
+
 
 
  });
