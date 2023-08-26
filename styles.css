@@ -19,6 +19,15 @@ h1 {
   font-family: "cursive", sans-serif;
 }
 
+.title {
+  text-align: center;
+  margin-top: 20px;
+}
+
+h2 {
+  text-align: center;
+}
+
 #addBookButton {
   background-color: #007bff;
   color: #ffffff;
@@ -26,7 +35,8 @@ h1 {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  margin: 10px;
+  margin: 10px auto;
+  display: block;
 }
 
 #searchForm {
@@ -63,6 +73,8 @@ h1 {
   border: 1px solid #ccc;
   padding: 10px;
   margin-bottom: 10px;
+  width: 100%; /* Prend toute la largeur */
+  box-sizing: border-box;
 }
 
 .livre-image-container {
@@ -105,6 +117,60 @@ h1 {
   width: 100px;
   height: auto;
   margin-top: 10px;
+}
+
+.logo-img {
+  display: block;
+  margin: 0 auto;
+  width: 600px;
+  height: auto;
+}
+
+#resultatsRecherche {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.livre-resultat {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid #000000;
+  padding: 10px;
+  margin-bottom: 20px;
+  width: calc(50% - 10px); /* Largeur de 50% moins la marge */
+  box-sizing: border-box; /* Inclure les bordures et le padding dans les dimensions */
+  position: relative;
+  background-color: #D3D3D3;
+}
+
+.livre-resultat .info-label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.livre-image-container {
+  flex: 0 0 auto;
+  margin-right: 10px;
+}
+
+.livre-image {
+  width: 100px;
+  height: auto;
+}
+
+.bookmark-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: #007bff;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.livre-info-container {
+  flex: 1 1 auto;
 }
 
 /*# sourceMappingURL=styles.css.map */
