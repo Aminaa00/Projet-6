@@ -230,8 +230,6 @@ function ajouterALaPochListe(livre) {
             <hr>
         `;
 
-        pochListeContainer.appendChild(livrePochListe);
-
         // Enregistrer les détails complets du livre dans la session
         livres.push(livre);
         sessionStorage.setItem('livresPochListe', JSON.stringify(livres));
@@ -273,15 +271,24 @@ function afficherLivreDansPochListe(livre) {
 }
 
 
-function supprimerDeLaPochListe(livreId, livreDivId) {
-    const livreDiv = document.getElementById(livreDivId);
-
-    // Supprimer le livre de la session storage
-    const livresPochListe = sessionStorage.getItem('livresPochListe');
-    let livres = livresPochListe ? JSON.parse(livresPochListe) : [];
-    livres = livres.filter(item => item.id !== livreId);
-    sessionStorage.setItem('livresPochListe', JSON.stringify(livres));
-
-    // Supprimer l'élément visuel du livre de la poch'liste
-    livreDiv.remove();
-}
+    function supprimerDeLaPochListe(livreId, livrePochListe) {
+        // Supprimer le livre de la session storage
+        const livresPochListe = sessionStorage.getItem('livresPochListe');
+        let livres = livresPochListe ? JSON.parse(livresPochListe) : [];
+        livres = livres.filter(item => item.id !== livreId);
+        sessionStorage.setItem('livresPochListe', JSON.stringify(livres));
+    
+        // Supprimer l'élément visuel du livre de la poch'liste
+        livrePochListe.remove();
+    }
+    
+    document.getElementById('pochListeContainer').addEventListener('click', function(event) {
+        const deleteIcon = event.target.closest('.delete-icon');
+        if (deleteIcon) {
+            const livreId = deleteIcon.parentElement.id.replace('livrePochListe-', '');
+            const livrePochListe = deleteIcon.closest('.livre-poch-liste');
+            if (livreId && livrePochListe) {
+                supprimerDeLaPochListe(livreId, livrePochListe);
+            }
+        }
+    });
