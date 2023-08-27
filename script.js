@@ -3,14 +3,14 @@ console.log("Bonjour ceci est mon fichier JavaScript :)");
 
 document.addEventListener("DOMContentLoaded", function() {
 
-    const divContent = document.getElementById('content');
+    const divPochListeContainer = document.getElementById('content');
     const bookListDiv = document.createElement("div");
     bookListDiv.id = 'bookList';
-    divContent.appendChild(bookListDiv);
+    divPochListeContainer.appendChild(bookListDiv);
 
     const pochListeContainer = document.createElement("div");
     pochListeContainer.id = 'pochListeContainer';
-    divContent.appendChild(pochListeContainer); //Sans ça = livres non ajoutés à Poch'liste
+    divPochListeContainer.appendChild(pochListeContainer); //Sans ça = livres non ajoutés à Poch'liste
 
     const addButton = document.createElement('button');
     addButton.textContent = 'Ajouter un livre';
@@ -21,8 +21,21 @@ document.addEventListener("DOMContentLoaded", function() {
     const livresPochListe = sessionStorage.getItem('livresPochListe');
     if (livresPochListe) {
         const livres = JSON.parse(livresPochListe);
-        livres.forEach(livre => afficherLivreDansPochListe(livre));
+        livres.forEach(livre => {
+            afficherLivreDansPochListe(livre);
+        });
     }
+
+    document.getElementById('pochListeContainer').addEventListener('click', function(event) {
+        const deleteIcon = event.target.closest('.delete-icon');
+        if (deleteIcon) {
+            const livreId = deleteIcon.parentElement.id.replace('livrePochListe-', '');
+            const livrePochListe = deleteIcon.closest('.livre-poch-liste');
+            if (livreId && livrePochListe) {
+                supprimerDeLaPochListe(livreId, livrePochListe);
+            }
+        }
+    });
 });
 
 
@@ -30,7 +43,7 @@ function afficherFormulaireRecherche() {
     // Masquer le bouton "Ajouter un livre"
     const addButton = document.getElementById('addBookButton');
     addButton.style.display = 'none';
-    
+
     // Créer formulaire de recherche
     const searchForm = document.createElement('form');
     searchForm.id = 'searchForm';
@@ -65,7 +78,7 @@ function afficherFormulaireRecherche() {
     buttonAnnuler.textContent = 'Annuler';
     buttonAnnuler.classList.add('button');
     buttonAnnuler.addEventListener('click', annulerRecherche);
-
+    
     // Ajout champs et bouton au formulaire
     searchForm.appendChild(labelTitreLivre);
     searchForm.appendChild(inputTitreLivre);
@@ -87,18 +100,17 @@ function afficherFormulaireRecherche() {
     searchForm.addEventListener('submit', rechercherLivres);
 
     // Ajoute formulaire de recherche à la page + trait séparation + 'résultat de recherche'
-    const divContent = document.getElementById('content');
-    divContent.appendChild(searchForm);
-    divContent.appendChild(separator1);
-    divContent.appendChild(textResultats);
+    const divPochListeContainer = document.getElementById('content');
+    divPochListeContainer.appendChild(searchForm);
+    divPochListeContainer.appendChild(separator1);
+    divPochListeContainer.appendChild(textResultats);
 
     textResultats.style.display = 'block';
 
     // Créer bloc pour afficher les résultats de recherche
     const blocResultats = document.createElement('div');
     blocResultats.id = 'resultatsRecherche';
-    divContent.appendChild(blocResultats);
-
+    divPochListeContainer.appendChild(blocResultats);
 }
 
 
@@ -271,15 +283,15 @@ function afficherLivreDansPochListe(livre) {
 }
 
 
-    function supprimerDeLaPochListe(livreId, livrePochListe) {
-        // Supprimer le livre de la session storage
-        const livresPochListe = sessionStorage.getItem('livresPochListe');
-        let livres = livresPochListe ? JSON.parse(livresPochListe) : [];
-        livres = livres.filter(item => item.id !== livreId);
-        sessionStorage.setItem('livresPochListe', JSON.stringify(livres));
+function supprimerDeLaPochListe(livreId, livrePochListe) {
+    // Supprimer le livre de la session storage
+    const livresPochListe = sessionStorage.getItem('livresPochListe');
+    let livres = livresPochListe ? JSON.parse(livresPochListe) : [];
+    livres = livres.filter(item => item.id !== livreId);
+    sessionStorage.setItem('livresPochListe', JSON.stringify(livres));
     
-        // Supprimer l'élément visuel du livre de la poch'liste
-        livrePochListe.remove();
+    // Supprimer l'élément visuel du livre de la poch'liste
+    livrePochListe.remove();
     }
     
     document.getElementById('pochListeContainer').addEventListener('click', function(event) {
@@ -291,4 +303,4 @@ function afficherLivreDansPochListe(livre) {
                 supprimerDeLaPochListe(livreId, livrePochListe);
             }
         }
-    });
+});
