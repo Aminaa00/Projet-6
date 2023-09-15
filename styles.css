@@ -80,17 +80,17 @@ h2 {
 
 #searchForm button[type=submit],
 #searchForm button[type=button] {
-  width: 20%; /* Définissez la largeur à 50% de la largeur du bouton Rechercher */
+  width: 20%;
 }
 
-/* Style pour les résultats de recherche en blocs */
+/* Style pour résultats de recherche en blocs */
 .livre-resultat {
   display: flex;
   align-items: center;
   border: 1px solid #ccc;
   padding: 10px;
   margin-bottom: 20px;
-  width: 100%; /* Prend toute la largeur */
+  width: 100%;
   box-sizing: border-box;
 }
 
@@ -136,10 +136,10 @@ h2 {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 20px;
-  padding: 20px; /* Ajoutez de la marge à l'intérieur de l'encadré */
+  padding: 20px;
   border-radius: 5px;
   color: #000000;
-  margin-top: 20px; /* Espacement depuis le haut de la page */
+  margin-top: 20px;
 }
 
 .livre-resultat {
@@ -195,6 +195,16 @@ h2 {
 
 #content h2 {
   display: none;
+}
+
+#pochListeContainer .livre-poch-liste {
+  display: flex;
+  align-items: center;
+  border: 1px solid #8f8f8f;
+  padding: 10px;
+  margin-bottom: 20px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 /*# sourceMappingURL=styles.css.map */
