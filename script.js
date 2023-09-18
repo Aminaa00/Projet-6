@@ -27,14 +27,14 @@ document.addEventListener("DOMContentLoaded", function() {
     const addButton = document.createElement('button');
     addButton.textContent = 'Ajouter un livre';
     addButton.id = 'addBookButton';
-    addButton.addEventListener('click', afficherFormulaireRecherche);
+    addButton.addEventListener('click', displaySearchForm);
     divContent.appendChild(addButton);
 
-    const booksPochListe = sessionStorage.getItem('booksPochListe');
-    if (booksPochListe) {
-        const livres = JSON.parse(booksPochListe);
-        livres.forEach(livre => {
-            afficherLivreDansPochListe(livre);
+    const booksPochList = sessionStorage.getItem('booksPochList');
+    if (booksPochList) {
+        const books = JSON.parse(booksPochList);
+        books.forEach(book => {
+            showBookInPochList(book);
         });
     }
 
@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function() {
             const bookId = deleteIcon.parentElement.id.replace('pochListBook-', '');
             const pochListBook = deleteIcon.closest('.livre-poch-liste');
             if (bookId && pochListBook) {
-                supprimerDeLaPochListe(bookId, pochListBook);
+                removeFromThePochlist(bookId, pochListBook);
             }
         }
     });
@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
-function afficherFormulaireRecherche() {
+function displaySearchForm() {
 
     // Masque bouton "Ajouter un livre"
     const addButton = document.getElementById('addBookButton');
@@ -92,7 +92,7 @@ function afficherFormulaireRecherche() {
     cancelButton.type = 'button';
     cancelButton.textContent = 'Annuler';
     cancelButton.classList.add('button');
-    cancelButton.addEventListener('click', annulerRecherche);
+    cancelButton.addEventListener('click', cancelSearch);
     
     // Ajout champs et bouton au formulaire
     searchForm.appendChild(labelTitleBook);
@@ -112,13 +112,13 @@ function afficherFormulaireRecherche() {
     searchResultsText.id = 'searchResultsText';
 
     // Ajoute gestionnaire d'événement pour la soumission du formulaire
-    searchForm.addEventListener('submit', rechercherLivres);
+    searchForm.addEventListener('submit', searchBooks);
 
     // Ajoute formulaire de recherche à la page + trait séparation + 'résultat de recherche'
-    const divPochListeContainer = document.getElementById('content');
-    divPochListeContainer.appendChild(searchForm);
-    divPochListeContainer.appendChild(separator1);
-    divPochListeContainer.appendChild(searchResultsText);
+    const divPochListContainer = document.getElementById('content');
+    divPochListContainer.appendChild(searchForm);
+    divPochListContainer.appendChild(separator1);
+    divPochListContainer.appendChild(searchResultsText);
 
 
     searchResultsText.style.display = 'block';
@@ -126,28 +126,28 @@ function afficherFormulaireRecherche() {
     // Créer bloc pour afficher les résultats de recherche
     const resultsBlock = document.createElement('div');
     resultsBlock.id = 'resultatsRecherche';
-    divPochListeContainer.appendChild(resultsBlock);
+    divPochListContainer.appendChild(resultsBlock);
 }
 
 
-function rechercherLivres(event) {
+function searchBooks(event) {
     event.preventDefault();
   
     //Récupération valeurs du formulaire de recherche
     const inputTitleBook = document.getElementById('titreLivre');
     const inputAuthor = document.getElementById('auteur');
-    const titreRecherche = inputTitleBook.value;
-    const auteurRecherche = inputAuthor.value;
+    const researchTitle = inputTitleBook.value;
+    const authorRecherche = inputAuthor.value;
 
 
     // Vérifie si champs = pas vides
-    if (titreRecherche.trim() === '' || auteurRecherche.trim() === '') {
+    if (researchTitle.trim() === '' || authorRecherche.trim() === '') {
         alert('Les champs "Titre du livre" et "Auteur" doivent être remplis.');
         return;
     }
 
     // Recherche livres selon données saisies
-    const url = `https://www.googleapis.com/books/v1/volumes?q=${titreRecherche}+inauthor:${auteurRecherche}`;
+    const url = `https://www.googleapis.com/books/v1/volumes?q=${researchTitle}+inauthor:${authorRecherche}`;
 
     fetch(url)
         .then((response) => response.json())
@@ -160,54 +160,54 @@ function rechercherLivres(event) {
                 resultsBlock.innerHTML = '<p>Aucun livre n’a été trouvé.</p>';
             } else {
             // Appelle fonction pour afficher résultats de recherche
-            afficherResultatsRecherche(data.items);
+            showSearchResults(data.items);
             }
         });
 }
 
 
 
-function afficherResultatsRecherche(resultats) {
+function showSearchResults(results) {
     const resultsBlock = document.getElementById('resultatsRecherche');
     resultsBlock.innerHTML = ''; // Supprime anciens résultats
 
     // Création éléments HTML pour afficher résultats de recherche
-    resultats.forEach((livre) => {
-        const livreDiv = document.createElement('div');
-        livreDiv.classList.add('livre-resultat')
+    results.forEach((book) => {
+        const bookDiv = document.createElement('div');
+        bookDiv.classList.add('livre-resultat')
 
-        livreDiv.innerHTML = `
+        bookDiv.innerHTML = `
         <div class="livre-resultat">
             <div class="livre-image-container">
-                <img class="livre-image" src="${livre.volumeInfo.imageLinks ? livre.volumeInfo.imageLinks.thumbnail : 'unavailable.png'}" alt="Image du livre">
+                <img class="livre-image" src="${book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.thumbnail : 'unavailable.png'}" alt="Image du livre">
                 <i class="fa-solid fa-bookmark bookmark-icon"></i>
             </div>
             <div class="livre-info-container">
                 <div class="info-label">ID:</div>
-                <div class="livre-id">${livre.id}</div>
+                <div class="livre-id">${book.id}</div>
                 <div class="info-label">Titre:</div>
-                <div class="livre-titre">${livre.volumeInfo.title}</div>
+                <div class="livre-titre">${book.volumeInfo.title}</div>
                 <div class="info-label">Auteur:</div>
-                <div class="livre-auteur">${livre.volumeInfo.authors ? livre.volumeInfo.authors[0] : 'Auteur inconnu'}</div>
+                <div class="livre-auteur">${book.volumeInfo.authors ? book.volumeInfo.authors[0] : 'Auteur inconnu'}</div>
                 <div class="info-label">Description:</div>
-                <div class="livre-description">${livre.volumeInfo.description ? livre.volumeInfo.description.substring(0, 200) : 'Information manquante'}</div>
+                <div class="livre-description">${book.volumeInfo.description ? book.volumeInfo.description.substring(0, 200) : 'Information manquante'}</div>
             </div>
         </div>
         `;
 
-        resultsBlock.appendChild(livreDiv);
+        resultsBlock.appendChild(bookDiv);
 
         // Gestionnaire d'événements pour l'icône marque-page
-        const bookmarkIcons = livreDiv.querySelectorAll('.bookmark-icon');
+        const bookmarkIcons = bookDiv.querySelectorAll('.bookmark-icon');
         bookmarkIcons.forEach(function(icon) {
             icon.addEventListener('click', function() {
-                ajouterALaPochListe(livre);
+                addToThePochList(book);
             });
         });
     });
 }
 
-function annulerRecherche() {
+function cancelSearch() {
     // Réinitialise champs du formulaire
     const inputTitleBook = document.getElementById('titreLivre');
     const inputAuthor = document.getElementById('auteur');
@@ -240,30 +240,30 @@ function annulerRecherche() {
 
 }
 
-function ajouterALaPochListe(livre) {
-    const divPochListeContainer = document.getElementById('pochListeContainer');
+function addToThePochList(book) {
+    const divPochListContainer = document.getElementById('pochListeContainer');
 
     // Vérifie si livre existe déjà dans la liste
-    const booksPochListe = sessionStorage.getItem('booksPochListe');
-    let livres = booksPochListe ? JSON.parse(booksPochListe) : [];
-    const livreExiste = livres.some(item => item.volumeInfo.title === livre.volumeInfo.title);
+    const booksPochList = sessionStorage.getItem('booksPochList');
+    let books = booksPochList ? JSON.parse(booksPochList) : [];
+    const bookExists = books.some(item => item.volumeInfo.title === book.volumeInfo.title);
 
-    if (livreExiste) {
+    if (bookExists) {
         alert("Vous ne pouvez ajouter deux fois le même livre.");
     } else {
         // Créer élément de liste pour le livre à ajouter
         const pochListBook = document.createElement('div');
         pochListBook.classList.add('livre-poch-liste');
-        pochListBook.id = 'pochListBook-' + livre.id;
+        pochListBook.id = 'pochListBook-' + book.id;
 
         // Contenu HTML du livre dans la poch'liste
         pochListBook.innerHTML = `
             <div class="livre-poch-liste-content">
-                <img class="livre-image" src="${livre.volumeInfo.imageLinks ? livre.volumeInfo.imageLinks.thumbnail : 'unavailable.png'}" alt="Image du livre">
+                <img class="livre-image" src="${book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.thumbnail : 'unavailable.png'}" alt="Image du livre">
                 <div class="livre-info">
-                    <div class="livre-titre">${livre.volumeInfo.title}</div>
-                    <div class="livre-auteur">${livre.volumeInfo.authors ? livre.volumeInfo.authors[0] : 'Auteur inconnu'}</div>
-                    <div class="livre-description">${livre.volumeInfo.description ? livre.volumeInfo.description.substring(0, 200) : 'Information manquante'}</div>
+                    <div class="livre-titre">${book.volumeInfo.title}</div>
+                    <div class="livre-auteur">${book.volumeInfo.authors ? book.volumeInfo.authors[0] : 'Auteur inconnu'}</div>
+                    <div class="livre-description">${book.volumeInfo.description ? book.volumeInfo.description.substring(0, 200) : 'Information manquante'}</div>
                 </div>
             </div>
             <i class="fas fa-trash delete-icon"></i>
@@ -272,17 +272,17 @@ function ajouterALaPochListe(livre) {
         `;
 
         // Enregistre les détails complets du livre dans la session
-        livres.push(livre);
-        sessionStorage.setItem('booksPochListe', JSON.stringify(livres));
+        books.push(book);
+        sessionStorage.setItem('booksPochList', JSON.stringify(books));
 
         // Affiche livre dans la poch'liste
-        afficherLivreDansPochListe(livre);
+        showBookInPochList(book);
     }
 }
 
 
-function afficherLivreDansPochListe(livre) {
-    const divPochListeContainer = document.getElementById('pochListeContainer');
+function showBookInPochList(book) {
+    const divPochListContainer = document.getElementById('pochListeContainer');
 
     // Créer  élément de liste pour le livre à afficher
     const pochListBook = document.createElement('div');
@@ -291,11 +291,11 @@ function afficherLivreDansPochListe(livre) {
     // Contenu HTML du livre dans la poch'liste
     pochListBook.innerHTML = `
     <div class="livre-poch-liste-content">
-        <img class="livre-image" src="${livre.volumeInfo.imageLinks && livre.volumeInfo.imageLinks.thumbnail ? livre.volumeInfo.imageLinks.thumbnail : 'unavailable.png'}" alt="Image du livre">
+        <img class="livre-image" src="${book.volumeInfo.imageLinks && book.volumeInfo.imageLinks.thumbnail ? book.volumeInfo.imageLinks.thumbnail : 'unavailable.png'}" alt="Image du livre">
         <div class="livre-info">
-            <div class="livre-titre">${livre.volumeInfo.title}</div>
-            <div class="livre-auteur">${livre.volumeInfo.authors ? livre.volumeInfo.authors[0] : 'Auteur inconnu'}</div>
-            <div class="livre-description">${livre.volumeInfo.description ? livre.volumeInfo.description.substring(0, 200) : 'Information manquante'}</div>
+            <div class="livre-titre">${book.volumeInfo.title}</div>
+            <div class="livre-auteur">${book.volumeInfo.authors ? book.volumeInfo.authors[0] : 'Auteur inconnu'}</div>
+            <div class="livre-description">${book.volumeInfo.description ? book.volumeInfo.description.substring(0, 200) : 'Information manquante'}</div>
         </div>
         <i class="fas fa-trash delete-icon"></i>
     </div>
@@ -304,19 +304,19 @@ function afficherLivreDansPochListe(livre) {
 
     // Ajout gestionnaire d'événements pour l'icône de corbeille
     const deleteIcon = pochListBook.querySelector('.delete-icon');
-    deleteIcon.addEventListener('click', () => supprimerDeLaPochListe(livre.id, pochListBook));
+    deleteIcon.addEventListener('click', () => removeFromThePochlist(book.id, pochListBook));
 
     // Ajoute livre à la poch'liste
-    divPochListeContainer.appendChild(pochListBook);
+    divPochListContainer.appendChild(pochListBook);
 }
 
 
-function supprimerDeLaPochListe(bookId, pochListBook) {
+function removeFromThePochlist(bookId, pochListBook) {
     // Supprime livre de la session storage
-    const booksPochListe = sessionStorage.getItem('booksPochListe');
-    let livres = booksPochListe ? JSON.parse(booksPochListe) : [];
-    livres = livres.filter(item => item.id !== bookId);
-    sessionStorage.setItem('booksPochListe', JSON.stringify(livres));
+    const booksPochList = sessionStorage.getItem('booksPochList');
+    let books = booksPochList ? JSON.parse(booksPochList) : [];
+    books = books.filter(item => item.id !== bookId);
+    sessionStorage.setItem('booksPochList', JSON.stringify(books));
     
     // Supprime élément visuel du livre de la poch'liste
     pochListBook.remove();
