@@ -87,7 +87,7 @@ body {
 }
 
 /* Style pour résultats de recherche en blocs */
-.livre-resultat {
+.book-result {
   display: flex;
   align-items: center;
   border: 1px solid #ccc;
@@ -97,26 +97,26 @@ body {
   box-sizing: border-box;
 }
 
-.livre-image-container {
+.book-image-container {
   flex: 0 0 auto;
   margin-right: 15px;
 }
 
-.livre-image {
+.book-image {
   width: 100px;
   height: auto;
 }
 
-.livre-titre {
+.book-title {
   font-weight: bold;
   margin-bottom: 5px;
 }
 
-.livre-auteur {
+.book-author {
   margin-bottom: 5px;
 }
 
-.livre-description {
+.book-description {
     max-height: 80px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -136,17 +136,17 @@ body {
 }
 
 
-#resultatsRecherche {
+#researchResults {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 20px;
-  padding: 20px;
+  padding: 20px; 
   border-radius: 5px;
   color: #000000;
   margin-top: 20px;
 }
 
-.livre-resultat {
+.book-result {
   border: 1px solid #343434;
   padding: 10px;
   display: flex;
@@ -158,17 +158,17 @@ body {
   margin-bottom: 20px;
 }
 
-.livre-resultat .info-label {
+.book-result .info-label {
   margin-bottom: 5px;
 }
 
 
-.livre-image-container {
+.book-image-container {
   flex: 0 0 auto;
   margin-right: 10px;
 }
 
-.livre-image {
+.book-image {
   max-width: 100%;
   height: auto;
   margin-bottom: 10px;
@@ -183,7 +183,7 @@ body {
   cursor: pointer;
 }
 
-.livre-info-container {
+.book-info-container {
   flex: 1 1 auto;
   text-align: left;
   font-weight: bold;
@@ -207,7 +207,7 @@ body {
   display: none;
 }
 
-#pochListeContainer .livre-poch-liste {
+#pochListContainer .book-poch-list {
   display: flex;
   align-items: center;
   border: 1px solid #8f8f8f;
