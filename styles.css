@@ -1,4 +1,3 @@
-@charset "UTF-8";
 body {
   font-family: "Handlee", sans-serif;
   background-color: #f0f0f0;
@@ -83,7 +82,6 @@ h2 {
   width: 20%;
 }
 
-/* Style pour résultats de recherche en blocs */
 .book-result {
   display: flex;
   align-items: center;
