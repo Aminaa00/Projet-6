@@ -8,17 +8,6 @@ body {
   
   h1 {
     font-family: 'Handlee', sans-serif;
-    color:  #ff0000;
-  }
-
-  .button {
-    background-color: #007bff;
-    color: #ffffff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-family: 'cursive', sans-serif;
   }
 
   .title {
@@ -31,7 +20,7 @@ body {
   }
 
   #addBookButton {
-    background-color: #007bff;
+    background-color: #21AB9F;
     color: #ffffff;
     padding: 10px 20px;
     border: none;
@@ -186,11 +175,6 @@ body {
   flex: 1 1 auto;
   text-align: left;
   font-weight: bold;
-}
-
-@media screen and (max-width: 768px) {
-}
-@media screen and (max-width: 480px) {
 }
 
 .logo-img {

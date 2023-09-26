@@ -1,6 +1,3 @@
-console.log("Bonjour ceci est mon fichier JavaScript :)");
-
-
 document.addEventListener("DOMContentLoaded", function() {
 
     var h2Element = document.querySelector("h2");
@@ -48,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
-
+// Création élément pour infos livre
 function createBookElement(book, icon) {
     return `
         <div class="book-image-container">
@@ -70,7 +67,7 @@ function createBookElement(book, icon) {
 }
 
 
-
+// Affichage Formulaire Recherche
 function displaySearchForm() {
 
     const addButton = document.getElementById('addBookButton');
@@ -135,7 +132,7 @@ function displaySearchForm() {
     divPochListContainer.appendChild(resultsBlock);
 }
 
-
+// Recherche livres
 function searchBooks(event) {
     event.preventDefault();
   
@@ -155,8 +152,6 @@ function searchBooks(event) {
     fetch(url)
         .then((response) => response.json())
         .then((data) => {
-            console.log('**** resultat Data : ', data);
-            console.log('**** resultat data.totalItems : ', data.totalItems);
 
             if (data.totalItems === 0) {
                 const resultsBlock = document.getElementById('researchResults');
@@ -168,7 +163,7 @@ function searchBooks(event) {
 }
 
 
-
+// Affichage résultats recherche
 function showSearchResults(results) {
     const resultsBlock = document.getElementById('researchResults');
     resultsBlock.innerHTML = '';
@@ -190,6 +185,8 @@ function showSearchResults(results) {
     });
 }
 
+
+// Annuler recherche
 function cancelSearch() {
     const inputTitleBook = document.getElementById('titleBook');
     const inputAuthor = document.getElementById('auteur');
@@ -200,7 +197,6 @@ function cancelSearch() {
     resultsBlock.remove();
 
     const separator = document.querySelector('.separator');
-    console.log("separator= ",separator);
     separator.remove();
 
 
@@ -218,6 +214,7 @@ function cancelSearch() {
 
 }
 
+// Ajouter à la poch'liste
 function addToThePochList(book) {
     const divPochListContainer = document.getElementById('pochListContainer');
 
@@ -236,7 +233,7 @@ function addToThePochList(book) {
     }
 }
 
-
+// Afficher dans la poch'liste
 function showBookInPochList(book) {
     const divPochListContainer = document.getElementById('pochListContainer');
 
@@ -252,7 +249,7 @@ function showBookInPochList(book) {
     divPochListContainer.appendChild(pochListBook);
 }
 
-
+// Retirer de la poch'liste
 function removeFromThePochlist(bookId, pochListBook) {
     const booksPochList = sessionStorage.getItem('booksPochList');
     let books = booksPochList ? JSON.parse(booksPochList) : [];
